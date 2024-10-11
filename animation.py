@@ -128,6 +128,27 @@ def main():
     animalSpeed = 5
     clicked = False
 
+    #-----------ANIMAL CREATION SECTION----------------
+    #THE FISH
+    #fish head
+    fishHead = BodyPart()
+    fishHead.radius = 55
+    fishHead.color = "red"
+    fishHead.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    #fish "rest"
+    fish0 = BodyPart()
+    fish0.radius = 75
+    fish0.color = "red"
+    fish0.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    #Setup body parts
+    bodyFISH = AnimalBody()
+    bodyFISH.body.append(fishHead)
+    bodyFISH.body.append(fish0)
+
+    print(bodyFISH.body)
+
     while running:
         screen.fill("black")
         clock.tick(fps)  
@@ -136,14 +157,8 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        clicked = True
-                        #Obter posicao onde clicou
-                        xMouse, yMouse = pygame.mouse.get_pos()
-                        mousePosition = (xMouse, yMouse)
-                        #print(mousePosition)
-                        #Desenhar circulo onde clicou
-                        drawCircle(screen, (xMouse, yMouse), 10, 0)
+                clicked = True
+                        
         xMouse, yMouse = pygame.mouse.get_pos()
         mousePosition = (xMouse, yMouse)
                         
@@ -154,6 +169,8 @@ def main():
         #Setting the circle vector second point
         xSecondPoint = xCircle + circleRadius * math.cos(angle)
         ySecondPoint = yCircle + circleRadius * math.sin(angle)
+        #Passing the second point as the center of the next part
+        fish0.coordinates = (xSecondPoint, ySecondPoint)
         
         #Design circle vector second point
         drawCircle(screen, (xSecondPoint, ySecondPoint), 5, 0)
@@ -161,7 +178,7 @@ def main():
         pygame.draw.line(screen, "white", (xCircle, yCircle), (xSecondPoint, ySecondPoint))
 
         # --------------------------------------------------------------------------------
-        #Updating the circle position towards the mouse
+        #Updating the head position towards the mouse
         if clicked:
             if xCircle != xMouse or yCircle != yMouse:
                 xCircle, yCircle= updateCirclePositionVector(circlePosition, mousePosition, animalSpeed)
@@ -173,9 +190,26 @@ def main():
         #Design main circle
         drawCircle(screen, (xCircle, yCircle), circleRadius, 1)
         
+        #Design the animal
+        #for bodyPart in bodyFISH.body:
+            #drawCircle(screen, bodyPart.coordinates, bodyPart.radius, 1)
+
         pygame.display.flip()
         
 pygame.quit()
+
+class BodyPart:
+    def __init__(self):
+        self.radius = 0
+        self.color = "white"
+        self.coordinates = ()
+        self.anchorCoordinates = ()
+
+class AnimalBody:
+    def __init__(self):
+        self.body = []
+        self.species = ""
+    
 
 if __name__ == "__main__":
     main()
