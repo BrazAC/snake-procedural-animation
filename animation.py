@@ -144,6 +144,8 @@ def main():
                         #print(mousePosition)
                         #Desenhar circulo onde clicou
                         drawCircle(screen, (xMouse, yMouse), 10, 0)
+        xMouse, yMouse = pygame.mouse.get_pos()
+        mousePosition = (xMouse, yMouse)
                         
         #Geting the main vector angle (already taking care of the quadrant)
         angle = math.atan2((yMouse - yCircle),(xMouse - xCircle))
