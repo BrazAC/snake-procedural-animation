@@ -1,8 +1,8 @@
 import pygame
 import math
 
-def drawCircle(screen, position, radius, width):
-    pygame.draw.circle(screen, "white", position, radius, width) 
+def drawCircle(screen, position, radius, width, color):
+    pygame.draw.circle(screen, color, position, radius, width) 
 
 def updateCirclePositionEquation(circlePosition, mousePosition, animalSpeed, angle):
     #Get circle center coordinates
@@ -81,17 +81,17 @@ def updateCirclePositionVector(circlePosition, mousePosition, animalSpeed):
     #Get circle center coordinates
     xCircle = circlePosition[0]
     yCircle = circlePosition[1]
-    #Get mouse click coordinates
+    #Get the target coordinates
     xMouse = mousePosition[0]
     yMouse = mousePosition[1]
 
-    #Get the vector circle/mouse
+    #Get the vector circle/target
     xVector = xMouse - xCircle
     yVector = yMouse - yCircle
     #Get the module of the vector
     module = math.sqrt((xVector)**2 + (yVector)**2)
 
-    if module != 0 and module > 75:
+    if module != 0:
         #Get the unitary vector
         xUnitVector = xVector / module
         yUnitVector = yVector / module
@@ -125,30 +125,88 @@ def main():
     yMouse = 0
     mousePosition = (xMouse, yMouse)
 
-    animalSpeed = 5
+    animalSpeed = 2.5
     clicked = False
 
     #-----------ANIMAL CREATION SECTION----------------
     #THE FISH
     #fish head
     fishHead = BodyPart()
-    fishHead.radius = 55
+    fishHead.radius = 25
     fishHead.color = "red"
     fishHead.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
 
     #fish "rest"
     fish0 = BodyPart()
-    fish0.radius = 75
-    fish0.color = "red"
+    fish0.radius = 45
+    fish0.color = "white"
     fish0.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish1 = BodyPart()
+    fish1.radius = 55
+    fish1.color = "white"
+    fish1.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish2 = BodyPart()
+    fish2.radius = 55
+    fish2.color = "white"
+    fish2.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish3 = BodyPart()
+    fish3.radius = 45
+    fish3.color = "white"
+    fish3.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish4 = BodyPart()
+    fish4.radius = 45
+    fish4.color = "white"
+    fish4.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish5 = BodyPart()
+    fish5.radius = 25
+    fish5.color = "white"
+    fish5.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish6 = BodyPart()
+    fish6.radius = 25
+    fish6.color = "white"
+    fish6.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish7 = BodyPart()
+    fish7.radius = 25
+    fish7.color = "white"
+    fish7.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish8 = BodyPart()
+    fish8.radius = 25
+    fish8.color = "white"
+    fish8.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish9 = BodyPart()
+    fish9.radius = 25
+    fish9.color = "white"
+    fish9.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
+
+    fish10 = BodyPart()
+    fish10.radius = 25
+    fish10.color = "white"
+    fish10.coordinates = (screenInfo.current_w // 2, screenInfo.current_h // 2)
 
     #Setup body parts
     bodyFISH = AnimalBody()
     bodyFISH.body.append(fishHead)
     bodyFISH.body.append(fish0)
-
-    print(bodyFISH.body)
-
+    bodyFISH.body.append(fish1)
+    bodyFISH.body.append(fish2)
+    bodyFISH.body.append(fish3)
+    bodyFISH.body.append(fish4)
+    bodyFISH.body.append(fish5)
+    bodyFISH.body.append(fish6)
+    bodyFISH.body.append(fish7)
+    bodyFISH.body.append(fish8)
+    bodyFISH.body.append(fish9)
+    bodyFISH.body.append(fish10)
+    
     while running:
         screen.fill("black")
         clock.tick(fps)  
@@ -161,38 +219,63 @@ def main():
                         
         xMouse, yMouse = pygame.mouse.get_pos()
         mousePosition = (xMouse, yMouse)
-                        
-        #Geting the main vector angle (already taking care of the quadrant)
-        angle = math.atan2((yMouse - yCircle),(xMouse - xCircle))
-        angle += math.radians(180)
-
-        #Setting the circle vector second point
-        xSecondPoint = xCircle + circleRadius * math.cos(angle)
-        ySecondPoint = yCircle + circleRadius * math.sin(angle)
-        #Passing the second point as the center of the next part
-        fish0.coordinates = (xSecondPoint, ySecondPoint)
-        
-        #Design circle vector second point
-        drawCircle(screen, (xSecondPoint, ySecondPoint), 5, 0)
-        #Design radius line
-        pygame.draw.line(screen, "white", (xCircle, yCircle), (xSecondPoint, ySecondPoint))
-
-        # --------------------------------------------------------------------------------
+                    
+        #=================================================================
+        #Update head: center and anchor
         #Updating the head position towards the mouse
         if clicked:
             if xCircle != xMouse or yCircle != yMouse:
                 xCircle, yCircle= updateCirclePositionVector(circlePosition, mousePosition, animalSpeed)
                 circlePosition = (xCircle, yCircle)
 
-                #Design trajectory line
-                pygame.draw.line(screen, "green", (xCircle, yCircle), (xMouse, yMouse))
+                #Passing the head coordinates to the register
+                bodyFISH.body[0].coordinates = circlePosition
 
-        #Design main circle
-        drawCircle(screen, (xCircle, yCircle), circleRadius, 1)
+                #Design trajectory line
+                #pygame.draw.line(screen, "green", (xCircle, yCircle), (xMouse, yMouse))
+
+                #Update anchor
+                #Geting the main vector angle (already taking care of the quadrant)
+                angle = math.atan2((yMouse - bodyFISH.body[0].coordinates[1]),(xMouse - bodyFISH.body[0].coordinates[0]))
+                angle += math.radians(180)
+
+                #Setting the circle vector second point
+                xSecondPoint = bodyFISH.body[0].coordinates[0] + bodyFISH.body[0].radius * math.cos(angle)
+                ySecondPoint = bodyFISH.body[0].coordinates[1] + bodyFISH.body[0].radius * math.sin(angle)
+                
+                #Passing the anchor coordinates to the register
+                bodyFISH.body[0].anchorCoordinates = (xSecondPoint, ySecondPoint)
+
+                #Design circle vector second point
+                #drawCircle(screen, (xSecondPoint, ySecondPoint), 5, 0, "red")
+                #Design radius line
+                #pygame.draw.line(screen, "white", (xCircle, yCircle), (xSecondPoint, ySecondPoint))
+
+            #Design the head    
+            drawCircle(screen, bodyFISH.body[0].coordinates, fishHead.radius, 1, "red")
+
+            #Iterate throw animalBody from the second body part
+            for aPIndex in range(1, len(bodyFISH.body)):
+                #If the distance betwn centers are bigger than the radius
+
+                #Get the distance bwetn the centers:
+                #Get the vector circle/target
+                currentCoords = bodyFISH.body[aPIndex].coordinates
+                previousCoords =  bodyFISH.body[aPIndex - 1].coordinates
+                xVector = previousCoords[0] - currentCoords[0]
+                yVector = previousCoords[1] - currentCoords[1]
+                #Get the module of the vector
+                module = math.sqrt((xVector)**2 + (yVector)**2)
+
+                #If the distance btewn centers is bigger than the previous body radius
+                if module > (bodyFISH.body[aPIndex - 1].radius + bodyFISH.body[aPIndex].radius):
+                    #Update the current bodyPart position
+                    bodyFISH.body[aPIndex].coordinates = updateCirclePositionVector(currentCoords, previousCoords, animalSpeed)
         
-        #Design the animal
-        #for bodyPart in bodyFISH.body:
-            #drawCircle(screen, bodyPart.coordinates, bodyPart.radius, 1)
+                #Design the bodyPart
+                bodyPartColor = bodyFISH.body[aPIndex].color
+                drawCircle(screen, bodyFISH.body[aPIndex].coordinates, bodyFISH.body[aPIndex].radius, 1, bodyPartColor)
+            #=================================================================
 
         pygame.display.flip()
         
