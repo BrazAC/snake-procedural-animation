@@ -1,6 +1,6 @@
 """
-This code is strictly following the "FABRIK: A fast, iterative solver for the Inverse Kinematics problem paper"
-pseudocode in topic three.
+This code strictly follows the pseudocode from topic three of the paper:
+'FABRIK: A fast, iterative solver for the Inverse Kinematics problem.
 """
 
 import pygame
